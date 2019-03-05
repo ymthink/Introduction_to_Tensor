@@ -4,6 +4,9 @@
 \usepackage{pgfplots, pgfplotstable}
 \usepackage{booktabs}
 \usepackage{amsmath,bm}
+\usepackage{mdframed}
+
+
 \pgfplotsset{compat=1.14}
 
 %\usetheme[framenumber,totalframenumber]{QU}
@@ -116,5 +119,53 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
 \end{itemize}
 \end{frame}
 
+\begin{frame}{CP Decomposition}
+\vskip -1ex
+\begin{figure}[t]
+	\centering  
+	\includegraphics[width=\linewidth]{figs/cp_arch}
+	\label{fig:cp_arch}
+\end{figure}
+\begin{columns}
+\column{0.5\linewidth}
+\vskip -10ex
+\begin{align*}
+\underline{\mathbf{X}}&\approx\sum_{r=1}^{R}\lambda_{r}\mathbf{b}_{r}^{(1)}\circ\mathbf{b}_{r}^{(2)}\circ\cdots\circ\mathbf{b}_{r}^{(N)} \\
+&=\underline{\mathbf{\Lambda}}\times_{1}\mathbf{B}^{(1)}\times_{2}\mathbf{B}^{(2)}\cdots\times_{N}\mathbf{B}^{(N)} \\
+&=[\![\mathbf{\Lambda};\mathbf{B}^{(1)},\mathbf{B}^{(1)},\cdots,\mathbf{B}^{(N)}]\!]
+\end{align*}
+
+\column{0.5\linewidth}
+\vskip -8ex
+\begin{align*}
+\mathbf{X}_{(1)}&=\mathbf{A}\mathbf{\Lambda}(\mathbf{C}\odot\mathbf{B})^{T}+\mathbf{E}_{(1)} \\
+\mathbf{X}_{(2)}&=\mathbf{B}\mathbf{\Lambda}(\mathbf{C}\odot\mathbf{A})^{T}+\mathbf{E}_{(2)} \\
+\mathbf{X}_{(3)}&=\mathbf{C}\mathbf{\Lambda}(\mathbf{B}\odot\mathbf{A})^{T}+\mathbf{E}_{(3)}
+\end{align*}
+
+\end{columns}
+\end{frame}
+
+\begin{frame}{Tucker Decomposition}
+\vskip -2ex
+\begin{figure}[t]
+	\centering  
+	\includegraphics[width=0.95\linewidth]{figs/tucker_arch}
+	\label{fig:tucker_arch}
+\end{figure}
+\vskip -2.5ex
+\begin{mdframed}[backgroundcolor=brown!20,roundcorner=8pt,leftmargin=60pt,rightmargin=60pt]
+\centering
+$
+\underline{\mathbf{Y}}=\underline{\mathbf{G}}\times_{1}\mathbf{A}\times_{2}\mathbf{B}\times_{3}\mathbf{C}+\mathbf{E}=[\![\mathbf{G};\mathbf{A},\mathbf{B},\mathbf{C}]\!]+\underline{\mathbf{E}}
+$
+\end{mdframed}
+\vskip -0.5ex
+\begin{align*}
+\mathbf{X}_{(1)}&\approx\mathbf{A}\mathbf{G}_{(1)}(\mathbf{C}\otimes\mathbf{B})^{T}\\
+\mathbf{X}_{(2)}&\approx\mathbf{B}\mathbf{G}_{(2)}(\mathbf{C}\otimes\mathbf{A})^{T}\\
+\mathbf{X}_{(3)}&\approx\mathbf{C}\mathbf{G}_{(3)}(\mathbf{B}\otimes\mathbf{A})^{T}
+\end{align*}
+\end{frame}
 
 \end{document}
