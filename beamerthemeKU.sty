@@ -293,13 +293,13 @@
 
 	\end{tikzpicture}
 
-      \pgftext[right, at = \pgfpoint{\the\paperwidth-\margin}{0.5\margin}]{%
-        \usebeamerfont{frame number in head}%
-        \usebeamercolor[fg]{frame number in head}\insertframenumber{}%
-        \ifbeamer@totalframenumber%
-          /\inserttotalframenumber%
-        \fi
-      }%
+%      \pgftext[right, at = \pgfpoint{\the\paperwidth-\margin}{0.5\margin}]{%
+%        \usebeamerfont{frame number in head}%
+%        \usebeamercolor[fg]{frame number in head}\insertframenumber{}%
+%        \ifbeamer@totalframenumber%
+%          /\inserttotalframenumber%
+%        \fi
+%      }%
 
 
       \pgftext[at = \pgfpoint{0.5\paperwidth}{0.5\margin}]{%
@@ -314,10 +314,10 @@
       }%
   
   
-      \pgftext[left, at = \pgfpoint{0.8\paperwidth }{0.5\margin}]{%
+      \pgftext[right, at = \pgfpoint{\the\paperwidth-\margin}{0.5\margin}]{%
         \usebeamerfont{frame number in head}%
         \usebeamercolor[fg]{frame number in head}
-            \ifx\insertdate\@empty%
+          \ifx\insertdate\@empty%
             	\date{}
             \else%
             	\ifx\insertshortdate\@empty%
@@ -331,7 +331,6 @@
       \pgftext[left, at = \pgfpoint{0.86\paperwidth}{0.55\margin}]{%
         \usebeamerfont{frame number in head}%
         \usebeamercolor[fg]{frame number in head}
-            %tensorlet.com
       }%
 
    \fi
@@ -352,6 +351,13 @@
 	      \fi
       }%
     \fi
+      \pgftext[right, at = \pgfpoint{\the\paperwidth-\margin}{0.5\margin}]{%
+        \usebeamerfont{frame number in head}%
+        \usebeamercolor[fg]{frame number in head}\insertframenumber{}%
+        \ifbeamer@totalframenumber%
+          /\inserttotalframenumber%
+        \fi
+      }%
 %    \beamertemplatenavigationsymbolshorizontal
   
 }%

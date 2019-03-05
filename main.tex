@@ -3,6 +3,7 @@
 \usepackage{tikz}
 \usepackage{pgfplots, pgfplotstable}
 \usepackage{booktabs}
+\usepackage{amsmath,bm}
 \pgfplotsset{compat=1.14}
 
 %\usetheme[framenumber,totalframenumber]{QU}
@@ -48,6 +49,7 @@
 \end{frame}
 
 \begin{frame}{What is tensor?}
+\vskip -1ex
 \begin{figure}
 	\centering  
 	\includegraphics[height=0.7\paperheight]{figs/tensor_shape}
@@ -56,6 +58,7 @@
 \end{frame}
 
 \begin{frame}{What is tensor?}
+\vskip -1ex
 \begin{figure}
 	\centering  
 	\includegraphics[height=0.7\paperheight]{figs/tensor_sample}
@@ -64,6 +67,7 @@
 \end{frame}
 
 \begin{frame}{Tensor fibers}
+\vskip -3ex
 \begin{figure}
 	\centering  
 	\includegraphics[width=\linewidth]{figs/tensor_fibers}
@@ -78,6 +82,30 @@
 	\label{fig:tensor_slices}
 \end{figure}
 \end{frame}
+
+\begin{frame}{Tensor unfolding}
+\vskip -3ex
+\begin{columns}[c]  %开始进入分栏环境，居中设置
+\column{0.4\linewidth}  
+\begin{figure}
+	\centering  
+	\includegraphics[height=0.75\paperheight]{figs/tensor_unfolding}
+	\label{fig:tensor_unfolding}
+\end{figure}
+
+\column{0.6\linewidth}  
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tensor_unfolding2}
+	\label{fig:tensor_unfolding2}
+\end{figure}
+\centering
+$\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
+\end{columns}  %分栏环境结束
+
+\end{frame}
+
+
 
 \begin{frame}{Agenda}
 \begin{itemize}
