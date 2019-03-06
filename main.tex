@@ -146,6 +146,22 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
 \end{columns}
 \end{frame}
 
+\begin{frame}{CP Decomposition}
+\large
+\begin{table}
+\begin{tabular}{l | l}
+Name & Proposed by \\
+\hline \hline
+Polyadic form of a tensor & Hitchcock, 1927 \\ 
+PARAFAC (parallel factors) & Harshman, 1970\\
+CANDECOMP or CAND (canonical decomposition) & Carroll and Chang, 1970\\
+Topographic components model & Mocks, 1988 \\
+CP (CANDECOMP/PARAFAC) & Kiers, 2000
+\end{tabular}
+\caption{Some of the many names for the CP decomposition.}
+\end{table}
+\end{frame}
+
 \begin{frame}{Tucker Decomposition}
 \vskip -2ex
 \begin{figure}[t]
@@ -166,6 +182,40 @@ $
 \mathbf{X}_{(2)}&\approx\mathbf{B}\mathbf{G}_{(2)}(\mathbf{C}\otimes\mathbf{A})^{T}\\
 \mathbf{X}_{(3)}&\approx\mathbf{C}\mathbf{G}_{(3)}(\mathbf{B}\otimes\mathbf{A})^{T}
 \end{align*}
+\end{frame}
+
+\begin{frame}{Tucker Decomposition}
+\large
+\begin{table}
+\begin{tabular}{l | l}
+Name & Proposed by \\
+\hline \hline
+Three-mode factor analysis (3MFA/Tucker3) & Tucker, 1966 \\ 
+Three-mode PCA (3MPCA) &  Kroonenberg and De Leeuw, 1980\\
+N-mode PCA & Kapteyn et al., 1986 \\
+Higher-order SVD (HOSVD)  & De Lathauwer et al., 2000 \\
+N-mode SVD & Vasilescu and Terzopoulos, 2002
+\end{tabular}
+\caption{Names for the Tucker decomposition (some specific to three-way and some for N-way).}
+\end{table}
+\end{frame}
+
+\begin{frame}{Tensor Train Decomposition}
+\large
+\begin{block}{Low-rank Decomposition}
+$$
+\begin{aligned}
+&\mathbf{A}=\mathbf{G}_{1}\mathbf{G}_{2}  \\
+&\mathbf{G}_{1}\text{: collection of rows, }\mathbf{G}_{2}\text{: collection of columbs}\\
+&\mathbf{A}_{i_1i_2}=\underbrace{\mathbf{G}_1^{(i_1)}}_{1\times R}\underbrace{\mathbf{G}_2^{(i_2)}}_{R\times 1}
+\end{aligned}
+$$
+\end{block}
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.45\linewidth]{figs/tt_lowrank.png}
+	\label{fig:tt_lowrank}
+\end{figure}
 \end{frame}
 
 \end{document}
