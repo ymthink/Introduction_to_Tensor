@@ -262,7 +262,60 @@ $$
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Transform-based Tensor Model}
+\begin{frame}{Low-tubal-rank Model}
+\vskip -1ex
+\begin{block}{Notation. \texttt{bcirc}}
+\vskip -1ex
+$$
+\texttt{bcirc}(\mathcal{A})=\left[
+  \begin{matrix}
+   A^{(1)} & A^{(n)} & A^{(n-1)} & \cdots &A^{(2)} \\
+   A^{(2)} & A^{(1)} & A^{(n)} & \cdots &A^{(3)} \\
+   \vdots & \vdots & \vdots & \ddots & \vdots \\
+    A^{(n)} & A^{(n-1)} & \cdots &A^{(2)} & A^{(1)}
+  \end{matrix}
+  \right]
+$$
+\end{block}
+\vskip -1ex
+\begin{block}{Notation. \texttt{unfold} and \texttt{fold}}
+\vskip -1ex
+$$
+\texttt{unfold}(\mathcal{A})=\left[
+  \begin{matrix}
+    A^{(1)} \\
+    A^{(2)} \\
+    \vdots \\
+    A^{(n)}
+  \end{matrix}
+\right], ~~~~~~~~\texttt{fold}(\texttt{unfold}(\mathcal{A}))=\mathcal{A}
+$$
+\end{block}
+
 
 \end{frame}
+
+\begin{frame}{Low-tubal-rank Model}
+\begin{block}{Definetion. t-Product}
+$$\mathcal{A}*\mathcal{B}=\texttt{fold}(\texttt{bcirc}(\mathcal{A})\cdot\texttt{unfold}(\mathcal{B}))$$
+\end{block}
+\begin{block}{Observation}
+~~~~Given $\mathbf{a}, \mathbf{b} \in \mathbb{K}_n$, $\mathbf{a} * \mathbf{b}$ can be computed as
+$$
+\mathbf{a} * \mathbf{b} := \texttt{ifft}(\hat{\mathbf{a}} \odot \hat{\mathbf{b}}, [], 3),
+$$
+where $\odot$ of two tubal scalars means pointwise multiplication.\\
+~~~~Factorizations of $\mathcal{A}$ are created (implicitly) by applying the appropriate matrix factorization to each of the $\hat{\mathcal{A}}^{(i)}$
+$$
+\mathcal{A}=\mathcal{Q} * \mathcal{R} \Longleftrightarrow \hat{\mathcal{A}}^{(i)}=\hat{\mathcal{Q}}^{(i)}\hat{\mathcal{R}}^{(i)}.
+$$
+\end{block}
+\end{frame}
+
+
+
+
+
+
+
 \end{document}
