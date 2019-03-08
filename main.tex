@@ -1,0 +1,268 @@
+\documentclass[t, 10pt, handout, aspectratio=169]{beamer}
+\usepackage{lipsum}
+\usepackage{tikz}
+\usepackage{pgfplots, pgfplotstable}
+\usepackage{booktabs}
+\usepackage{amsmath,bm}
+\usepackage{mdframed}
+
+
+\pgfplotsset{compat=1.14}
+
+%\usetheme[framenumber,totalframenumber]{QU}
+\usetheme[color=blue,framenumber,totalframenumber, footline, footertext]{KU}
+
+
+\title[Introduction to Tensor]{Introduction to \texttt{Tensor}}
+\subtitle{Intelligent Computing for Computational Intelligence \\
+in post Moore’s Law era!}
+
+\author[yanglet]{Xiao-Yang Liu\\
+\url{www.tensorlet.com}}
+\institute[CU]{Columbia University}
+
+\footertext{\textcolor{red}{\url{www.tensorlet.com}}}
+
+
+\date[\number\month/\number\day/\number\year]{\today}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Agenda}
+\begin{itemize}
+    \large \item \textcolor{red}{Background}
+    \large \item {Tensor Decompositions (CP, Tucker, and Tensor-Train/Tensor-Ring)}
+    \large \item{Transform-based Tensor Model and Applications}
+    \large \item{Tensor Computations (cuTensor, TensorDeC$++$)}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Background}
+\large Multidimensional data of exceedingly huge volume, variety and structural richness become ubiquitous across disciplines in engineering and data science:
+\begin{itemize}
+    \item multimedia data like speech and video
+    \item remote sensing data
+    \item medical and biological data
+    \item seismic data
+\end{itemize}
+\vskip 0.2\margin
+\large Some data can have more meaningful representation using multi-way arrays -- \textbf{tensor}, rather than matrices (two-way arrays).
+\end{frame}
+
+\begin{frame}{What is tensor?}
+\vskip -1ex
+\begin{figure}
+	\centering  
+	\includegraphics[height=0.7\paperheight]{figs/tensor_shape}
+	\label{fig:tensor_shape}
+\end{figure}
+\end{frame}
+
+\begin{frame}{What is tensor?}
+\vskip -1ex
+\begin{figure}
+	\centering  
+	\includegraphics[height=0.7\paperheight]{figs/tensor_sample}
+	\label{fig:tensor_sample}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Tensor fibers}
+\vskip -3ex
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tensor_fibers}
+	\label{fig:tensor_fibers}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Tensor slices}
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tensor_slices}
+	\label{fig:tensor_slices}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Tensor unfolding}
+\vskip -3ex
+\begin{columns}[c]  %开始进入分栏环境，居中设置
+\column{0.4\linewidth}  
+\begin{figure}
+	\centering  
+	\includegraphics[height=0.75\paperheight]{figs/tensor_unfolding}
+	\label{fig:tensor_unfolding}
+\end{figure}
+
+\column{0.6\linewidth}  
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tensor_unfolding2}
+	\label{fig:tensor_unfolding2}
+\end{figure}
+\centering
+$\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
+\end{columns}  %分栏环境结束
+
+\end{frame}
+
+
+
+\begin{frame}{Agenda}
+\begin{itemize}
+    \large \item {Background}
+    \large \item \textcolor{red}{Tensor Decompositions (CP, Tucker, and Tensor-Train/Tensor-Ring)}
+    \large \item{Transform-based Tensor Model and Applications}
+    \large \item{Tensor Computations (cuTensor, TensorDeC$++$)}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{CP Decomposition}
+\vskip -1ex
+\begin{figure}[t]
+	\centering  
+	\includegraphics[width=\linewidth]{figs/cp_arch}
+	\label{fig:cp_arch}
+\end{figure}
+\begin{columns}
+\column{0.5\linewidth}
+\vskip -10ex
+\begin{align*}
+\underline{\mathbf{X}}&\approx\sum_{r=1}^{R}\lambda_{r}\mathbf{b}_{r}^{(1)}\circ\mathbf{b}_{r}^{(2)}\circ\cdots\circ\mathbf{b}_{r}^{(N)} \\
+&=\underline{\mathbf{\Lambda}}\times_{1}\mathbf{B}^{(1)}\times_{2}\mathbf{B}^{(2)}\cdots\times_{N}\mathbf{B}^{(N)} \\
+&=[\![\mathbf{\Lambda};\mathbf{B}^{(1)},\mathbf{B}^{(1)},\cdots,\mathbf{B}^{(N)}]\!]
+\end{align*}
+
+\column{0.5\linewidth}
+\vskip -8ex
+\begin{align*}
+\mathbf{X}_{(1)}&=\mathbf{A}\mathbf{\Lambda}(\mathbf{C}\odot\mathbf{B})^{T}+\mathbf{E}_{(1)} \\
+\mathbf{X}_{(2)}&=\mathbf{B}\mathbf{\Lambda}(\mathbf{C}\odot\mathbf{A})^{T}+\mathbf{E}_{(2)} \\
+\mathbf{X}_{(3)}&=\mathbf{C}\mathbf{\Lambda}(\mathbf{B}\odot\mathbf{A})^{T}+\mathbf{E}_{(3)}
+\end{align*}
+
+\end{columns}
+\end{frame}
+
+\begin{frame}{CP Decomposition}
+\large
+\begin{table}
+\begin{tabular}{l | l}
+Name & Proposed by \\
+\hline \hline
+Polyadic form of a tensor & Hitchcock, 1927 \\ 
+PARAFAC (parallel factors) & Harshman, 1970\\
+CANDECOMP or CAND (canonical decomposition) & Carroll and Chang, 1970\\
+Topographic components model & Mocks, 1988 \\
+CP (CANDECOMP/PARAFAC) & Kiers, 2000
+\end{tabular}
+\caption{Some of the many names for the CP decomposition.}
+\end{table}
+\end{frame}
+
+\begin{frame}{Tucker Decomposition}
+\vskip -2ex
+\begin{figure}[t]
+	\centering  
+	\includegraphics[width=0.95\linewidth]{figs/tucker_arch}
+	\label{fig:tucker_arch}
+\end{figure}
+\vskip -2.5ex
+\begin{mdframed}[backgroundcolor=brown!20,roundcorner=8pt,leftmargin=60pt,rightmargin=60pt]
+\centering
+$
+\underline{\mathbf{Y}}=\underline{\mathbf{G}}\times_{1}\mathbf{A}\times_{2}\mathbf{B}\times_{3}\mathbf{C}+\mathbf{E}=[\![\mathbf{G};\mathbf{A},\mathbf{B},\mathbf{C}]\!]+\underline{\mathbf{E}}
+$
+\end{mdframed}
+\vskip -0.5ex
+\begin{align*}
+\mathbf{X}_{(1)}&\approx\mathbf{A}\mathbf{G}_{(1)}(\mathbf{C}\otimes\mathbf{B})^{T}\\
+\mathbf{X}_{(2)}&\approx\mathbf{B}\mathbf{G}_{(2)}(\mathbf{C}\otimes\mathbf{A})^{T}\\
+\mathbf{X}_{(3)}&\approx\mathbf{C}\mathbf{G}_{(3)}(\mathbf{B}\otimes\mathbf{A})^{T}
+\end{align*}
+\end{frame}
+
+\begin{frame}{Tucker Decomposition}
+\large
+\begin{table}
+\begin{tabular}{l | l}
+Name & Proposed by \\
+\hline \hline
+Three-mode factor analysis (3MFA/Tucker3) & Tucker, 1966 \\ 
+Three-mode PCA (3MPCA) &  Kroonenberg and De Leeuw, 1980\\
+N-mode PCA & Kapteyn et al., 1986 \\
+Higher-order SVD (HOSVD)  & De Lathauwer et al., 2000 \\
+N-mode SVD & Vasilescu and Terzopoulos, 2002
+\end{tabular}
+\caption{Names for the Tucker decomposition (some specific to three-way and some for N-way).}
+\end{table}
+\end{frame}
+
+\begin{frame}{Tensor Train Decomposition}
+\large
+\begin{block}{Low-rank Decomposition}
+$$
+\begin{aligned}
+&\mathbf{A}=\mathbf{G}_{1}\mathbf{G}_{2}  \\
+&\mathbf{G}_{1}\text{: collection of rows, }\mathbf{G}_{2}\text{: collection of columbs}\\
+&\mathbf{A}_{i_1i_2}=\underbrace{\mathbf{G}_1(i_1)}_{1\times R}\underbrace{\mathbf{G}_2(i_2)}_{R\times 1}
+\end{aligned}
+$$
+\end{block}
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.45\linewidth]{figs/tt_lowrank.png}
+	\label{fig:tt_lowrank}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Tensor Train Decomposition}
+\large
+\begin{block}{TT Form}
+$$
+\underline{\mathbf{A}}_{i_1i_2\cdots i_N}=\underbrace{\mathbf{G}_{1}(i_1)}_{1\times R}\underbrace{\mathbf{G}_{2}(i_2)}_{R\times R}\cdots\underbrace{\mathbf{G}_{N}(i_N)}_{R\times 1}
+$$
+\end{block}
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.9\linewidth]{figs/tt_form_example.png}
+	\label{fig:tt_form_example}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Tensor Ring Decomposition}
+\large
+
+\begin{block}{TR Form}
+$$
+\begin{aligned}
+\underline{\mathbf{A}}_{i_1i_2\cdots i_N}=\text{Tr}\{\mathbf{Z}_1(i_1)\mathbf{Z}_2(i_2)\cdots\mathbf{Z}_N(i_N)\}
+=\text{Tr}\left\{\prod_{k=1}^{N}\mathbf{Z}_k(i_k)\right\}
+\end{aligned}
+$$
+\end{block}
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.55\linewidth]{figs/tensor_ring_arch.png}
+	\label{fig:tensor_ring_arch}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Agenda}
+\begin{itemize}
+    \large \item {Background}
+    \large \item {Tensor Decompositions (CP, Tucker, and Tensor-Train/Tensor-Ring)}
+    \large \item \textcolor{red}{Transform-based Tensor Model and Applications}
+    \large \item{Tensor Computations (cuTensor, TensorDeC$++$)}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Transform-based Tensor Model}
+
+\end{frame}
+\end{document}
