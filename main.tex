@@ -33,7 +33,7 @@
 \begin{frame}{Agenda}
 \begin{itemize}
     \large \item \textcolor{red}{Background}
-    \large \item {Tensor Decompositions (CP, Tucker, and Tensor-Train)}
+    \large \item {Tensor Decompositions (CP, Tucker, Tensor-Train, and Tensor-Ring)}
     \large \item{Transform-based Tensor Model and Applications}
     \large \item{Tensor Computations}
 \end{itemize}
@@ -113,7 +113,7 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
 \begin{frame}{Agenda}
 \begin{itemize}
     \large \item {Background}
-    \large \item \textcolor{red}{Tensor Decompositions (CP, Tucker, and Tensor-Train)}
+    \large \item \textcolor{red}{Tensor Decompositions (CP, Tucker, Tensor-Train, and Tensor-Ring)}
     \large \item{Transform-based Tensor Model and Applications}
     \large \item{Tensor Computations}
 \end{itemize}
@@ -230,5 +230,36 @@ $$
 	\includegraphics[width=0.9\linewidth]{figs/tt_form_example.png}
 	\label{fig:tt_form_example}
 \end{figure}
+\end{frame}
+
+\begin{frame}{Tensor Ring Decomposition}
+\large
+
+\begin{block}{TR Form}
+$$
+\begin{aligned}
+\underline{\mathbf{A}}_{i_1i_2\cdots i_N}=\text{Tr}\{\mathbf{Z}_1(i_1)\mathbf{Z}_2(i_2)\cdots\mathbf{Z}_N(i_N)\}
+=\text{Tr}\left\{\prod_{k=1}^{N}\mathbf{Z}_k(i_k)\right\}
+\end{aligned}
+$$
+\end{block}
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.55\linewidth]{figs/tensor_ring_arch.png}
+	\label{fig:tensor_ring_arch}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Agenda}
+\begin{itemize}
+    \large \item {Background}
+    \large \item {Tensor Decompositions (CP, Tucker, Tensor-Train, and Tensor-Ring)}
+    \large \item \textcolor{red}{Transform-based Tensor Model and Applications}
+    \large \item{Tensor Computations}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Transform-based Tensor Model}
+
 \end{frame}
 \end{document}
