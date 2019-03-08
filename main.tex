@@ -264,7 +264,7 @@ $$
 
 \begin{frame}{Low-tubal-rank Model}
 \vskip -1ex
-\begin{block}{Notation. \texttt{bcirc}}
+\begin{block}{Notation}
 \vskip -1ex
 $$
 \texttt{bcirc}(\mathcal{A})=\left[
@@ -276,10 +276,6 @@ $$
   \end{matrix}
   \right]
 $$
-\end{block}
-\vskip -1ex
-\begin{block}{Notation. \texttt{unfold} and \texttt{fold}}
-\vskip -1ex
 $$
 \texttt{unfold}(\mathcal{A})=\left[
   \begin{matrix}
@@ -291,8 +287,14 @@ $$
 \right], ~~~~~~~~\texttt{fold}(\texttt{unfold}(\mathcal{A}))=\mathcal{A}
 $$
 \end{block}
+\end{frame}
 
-
+\begin{frame}{Low-tubal-rank Model}
+\begin{block}{Notation}
+~~~~For $\mathcal{A}\in\mathbb{R}^{l\times m\times n}$ 
+$$\mathcal{X}^{(l)}\equiv\mathcal{X}(:,:,l),~~~~\vec{\mathcal{A}}_i\equiv\mathcal{A}(:,i,:),~~~~\mathcal{A}^{(j)}\equiv\mathcal{A}(:,:,j)$$
+$$\hat{\mathcal{A}} := \texttt{fft}(\mathcal{A}, [], 3)$$
+\end{block}
 \end{frame}
 
 \begin{frame}{Low-tubal-rank Model}
@@ -312,9 +314,64 @@ $$
 \end{block}
 \end{frame}
 
+\begin{frame}{Low-tubal-rank Model}
+\begin{block}{t-SVD}
+$$
+\mathcal{A}=\mathcal{U}*\mathcal{S}*\mathcal{V}^{T}=\sum_{i=1}^{\text{min}(l,m)}\vec{\mathcal{U}}_i*\mathbf{s}_i*\vec{\mathcal{V}}_i^T, ~~~~\mathbf{s}_i :=\mathcal{S}(i,i,:)
+$$
+\end{block}
+\vskip -1.5ex
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.7\linewidth]{figs/tsvd_arch.png}
+	\label{fig:tsvd_arch}
+\end{figure}
+\end{frame}
 
+\begin{frame}{Tensor Sparse Coding}
+\large
+\begin{mdframed}[backgroundcolor=brown!20,roundcorner=8pt,leftmargin=60pt,rightmargin=60pt]
+$$
+\begin{aligned}
+\min_{\mathcal{D},\mathcal{C}}&~~~\frac{1}{2}\|\mathcal{A}-\mathcal{D}*\mathcal{C}\|_{F}^{2}+\beta\|\mathcal{C}\|_1 \\
+\text{s.t.} &~~~ \|\vec{\mathcal{D}}_j\|_F^2\le 1, j=1,2,\cdots,r
+\end{aligned}
+$$
+$$\text{where}~\mathcal{D}\in\mathbb{R}^{l\times r\times n} ~\text{and} ~r > l$$
+\end{mdframed}
+\end{frame}
 
+\begin{frame}{Tensor Sparse Coding}
+\begin{block}{Tensor Coefficients Learning}
+$$
+\min_{\mathcal{C}}:=f(\mathcal{C})+\beta g(\mathcal{C})
+$$
+$$
+f(\mathcal{C}) = \frac{1}{2}\|\mathcal{A}-\mathcal{D}*\mathcal{C}\|_F^2, ~~g(\mathcal{C}) = \|\mathcal{C}\|_1
+$$
+\end{block}
+\end{frame}
 
+\begin{frame}{Tensor Sparse Coding}
+\begin{block}{Tensor Dictionary Learning}
+\vskip -1ex
+$$
+\begin{aligned}
+\min_{\mathcal{D}}&~~~\frac{1}{2}\|\mathcal{A}-\mathcal{D}*\mathcal{C}\|_{F}^{2}+\beta\|\mathcal{C}\|_1 \\
+\text{s.t.} &~~~ \|\vec{\mathcal{D}}_j\|_F^2\le 1, j=1,2,\cdots,r.
+\end{aligned}
+$$
+~~~~We transform this problem into the frequecy domain:
+\vskip -1ex
+$$
+\begin{aligned}
+\min_{\hat{\mathcal{D}}^{(l)}}&~~~\sum_{l=1}^{n}\|\hat{\mathcal{X}}^{(l)}-\hat{\mathcal{D}}^{(l)}\hat{\mathcal{C}}^{(l)}\|_F^2,l=1,2,\cdots,n \\
+\text{s.t.}&~~~\sum_{l=1}^{n}\|\hat{\mathcal{D}}^{(l)}(:,j)\|_F^2\le n, j=1,2,\cdots,r.
+\end{aligned}
+$$
+~~~~Then adopt the Lagrange dual (Lee et al. 2007) to solve the dual variables by Newton’s algorithm.
+\end{block}
+\end{frame}
 
 
 
