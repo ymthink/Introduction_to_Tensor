@@ -153,7 +153,7 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
 \large
 \begin{table}
 \begin{tabular}{l | l}
-Name & Proposed by \\
+\textbf{Name} & \textbf{Proposed by} \\
 \hline \hline
 Polyadic form of a tensor & Hitchcock, 1927 \\ 
 PARAFAC (parallel factors) & Harshman, 1970\\
@@ -404,10 +404,10 @@ This library is a general approach to compute low-tubal-rank tensor operations i
 
 \begin{table}
 $\begin{array}{l | l | l}
-\text{Operation} & \text{Input} & \text{Output} \\
+\textbf{Operation} & \textbf{Input} & \textbf{Output} \\
 \hline \hline
-\text{t-FFT} & \mathcal{A}\in\mathbb{R}^{m\times n\times k} & \tilde{\mathcal{A}}\in\mathbb{C}^{m\times n\times k} \\
-\text{inverse t-FFT} & \tilde{\mathcal{A}}\in\mathbb{C}^{m\times n\times k} & \mathcal{A}\in\mathbb{R}^{m\times n\times k} \\
+\text{t-FFT} & \mathcal{A}\in\mathbb{R}^{m\times n\times k} & \hat{\mathcal{A}}\in\mathbb{C}^{m\times n\times k} \\
+\text{inverse t-FFT} & \hat{\mathcal{A}}\in\mathbb{C}^{m\times n\times k} & \mathcal{A}\in\mathbb{R}^{m\times n\times k} \\
 \text{t-product} & \mathcal{A}\in\mathbb{R}^{m\times l\times k},\mathcal{B}\in\mathbb{R}^{l\times n\times k} & \mathcal{C}\in\mathbb{R}^{m\times n\times k} \\
 \text{t-SVD} & \mathcal{T}\in\mathbb{R}^{m\times n\times k} & \mathcal{U}\in\mathbb{R}^{m\times m\times k},\mathcal{V}\in\mathbb{R}^{n\times n\times k}, \mathcal{\Theta}\in\mathbb{R}^{m\times n\times k} \\
 \text{t-QR} & \mathcal{T}\in\mathbb{R}^{m\times n\times k} & \mathcal{Q}\in\mathbb{R}^{m\times m\times k}, \mathcal{R}\in\mathbb{R}^{m\times n\times k} \\
@@ -416,22 +416,75 @@ $\begin{array}{l | l | l}
 \end{array}$
 \caption{Seven tensor operations in the cuTensor-tubal library}
 \end{table}
+\end{frame}
 
+\begin{frame}{cuTensor-tubal (GPU)}
+\large
+\begin{block}{Key Challenges}
 
+\begin{itemize}
+  \item Data Transfer Between the CPU and GPU 
+  \item Alternative Access to Tube and Slice Data Structures
+  \item Parallelizing the Fourier Transforms and Matrix Computations
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{cuTensor-tubal (GPU)}
+\framesubtitle{Efficient Data Transfer}
+\vskip -2ex
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/cutensor_datatrans.png}\\
+	Overlapping data transfer with computations
+	\label{fig:cutensor_datatrans}
+\end{figure}
+\end{frame}
+
+\begin{frame}{cuTensor-tubal (GPU)}
+\framesubtitle{ Uniform Memory Access to Tube and Slice Data Structures}
+\vskip -2ex
+\vfill
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.5\linewidth]{figs/cutensor_datastorage.png}\hfill  \includegraphics[width=0.5\linewidth]{figs/cutensor_datastructure.png}\\
+	Tensors are stored as a 1D array in memory\hfill Data structures in tensor computations
+	\label{fig:cutensor_datastructure}
+\end{figure}
+\vfill
+\end{frame}
+
+\begin{frame}{cuTensor-tubal (GPU)}
+\framesubtitle{Parallelizing the Fourier Transforms and Matrix Computations}
+
+\begin{table}
+$\begin{array}{l | l | l |l}
+\textbf{Operation} & \textbf{\#(FFT operations)} & \textbf{\#(Matrix Operation)} & \textbf{\#(inverse FFT operation)}\\
+\hline \hline
+\text{t-FFT} & m \times n & \text{None} & m \times n \\
+\text{inverse t-FFT} & m \times n & \text{None} & m \times n \\
+\text{t-product} & m \times l + l\times n & k & m \times n \\
+\text{t-SVD} & m \times n & k & m \times n + n\times n + m\times n \\
+\text{t-QR} & m \times n & k & m \times m + m \times n \\
+\text{t-inverse} & n \times n & k & n \times n \\
+\text{t-normalization} & m & k & m 
+\end{array}$
+\caption{Seven tensor operations in the cuTensor-tubal library}
+\end{table}
 \end{frame}
 
 \begin{frame}{cuTensor-tubal (GPU)}
 \begin{figure}
 	\centering  
-	\includegraphics[width=0.55\linewidth]{figs/cutensor_datastructure.png}\\
-	Data structures in tensor computations
-	\label{fig:cutensor_datastructure}
+	\includegraphics[width=0.9\linewidth]{figs/cutensor_workflow.png} \\
+	System workflow of the cuTensor-tubal library
+	\label{fig:cutensor_workflow}
 \end{figure}
 \begin{figure}
 	\centering  
-	\includegraphics[width=0.9\linewidth]{figs/cutensor_workflow.png}\\
-	System workflow of the cuTensor-tubal library
-	\label{fig:cutensor_workflow}
+	\includegraphics[width=0.6\linewidth]{figs/cutensor_memoryaccess.png} \\
+	Memory access operators
+	\label{fig:cutensor_memoryaccess}
 \end{figure}
 \end{frame}
 
