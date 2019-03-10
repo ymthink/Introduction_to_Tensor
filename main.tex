@@ -3,7 +3,7 @@
 \usepackage{tikz}
 \usepackage{pgfplots, pgfplotstable}
 \usepackage{booktabs}
-\usepackage{amsmath,bm}
+\usepackage{amsmath,bm,amstext}
 \usepackage{mdframed}
 
 
@@ -388,6 +388,36 @@ $$
     \large \item {Transform-based Tensor Model and Applications}
     \large \item \textcolor{red}{Tensor Computations (cuTensor, TensorDeC$++$)}
 \end{itemize}
+\end{frame}
+
+\begin{frame}{cuTensor-tubal (GPU)}
+\large
+This library is a general approach to compute low-tubal-rank tensor operations in the frequency domain on GPUs.
+\begin{enumerate}
+  \item Obtain the frequency domain representation of the input tensor by performing Fourier transform along the third dimension (called tube-wise DFT) on the GPU;
+  \item In the frequency domain, the tensor operations are separated into multiple independent complex matrix computations that possess strong parallelism;
+  \item Converting the frequency domain results back to the time domain through inverse Fourier transform along the third dimension on the GPU (called tube-wise inverse DFT).
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{cuTensor-tubal (GPU)}
+
+\begin{table}
+$\begin{array}{l | l | l}
+\text{Operation} & \text{Input} & \text{Output} \\
+\hline \hline
+\text{t-FFT} & \mathcal{A}\in\mathbb{R}^{m\times n\times k} & \tilde{\mathcal{A}}\in\mathbb{C}^{m\times n\times k} \\
+\text{inverse t-FFT} & \tilde{\mathcal{A}}\in\mathbb{C}^{m\times n\times k} & \mathcal{A}\in\mathbb{R}^{m\times n\times k} \\
+\text{t-product} & \mathcal{A}\in\mathbb{R}^{m\times l\times k},\mathcal{B}\in\mathbb{R}^{l\times n\times k} & \mathcal{C}\in\mathbb{R}^{m\times n\times k} \\
+\text{t-SVD} & \mathcal{T}\in\mathbb{R}^{m\times n\times k} & \mathcal{U}\in\mathbb{R}^{m\times m\times k},\mathcal{V}\in\mathbb{R}^{n\times n\times k}, \mathcal{\Theta}\in\mathbb{R}^{m\times n\times k} \\
+\text{t-QR} & \mathcal{T}\in\mathbb{R}^{m\times n\times k} & \mathcal{Q}\in\mathbb{R}^{m\times m\times k}, \mathcal{R}\in\mathbb{R}^{m\times n\times k} \\
+\text{t-inverse} &\mathcal{T}\in\mathbb{R}^{n\times n\times k} &\mathcal{T}^{-1}\in\mathbb{R}^{n\times n\times k} \\
+\text{t-normalization} & \mathcal{T}\in\mathbb{R}^{m\times 1\times k} & \mathcal{T}\in\mathbb{R}^{m\times 1\times k}
+\end{array}$
+\caption{Seven tensor operations in the cuTensor-tubal library}
+\end{table}
+
+
 \end{frame}
 
 \begin{frame}{cuTensor-tubal (GPU)}
