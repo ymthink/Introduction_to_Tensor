@@ -5,6 +5,8 @@
 \usepackage{booktabs}
 \usepackage{amsmath,bm,amstext}
 \usepackage{mdframed}
+\usepackage{mleftright}
+
 
 
 \pgfplotsset{compat=1.14}
@@ -67,7 +69,7 @@ in post Moore’s Law era!}
 \vskip -1ex
 \begin{figure}
 	\centering  
-	\includegraphics[height=0.8\paperheight]{figs/tensor_sample}
+	\includegraphics[height=0.7\paperheight]{figs/tensor_sample}
 	\label{fig:tensor_sample}
 \end{figure}
 \end{frame}
@@ -265,6 +267,7 @@ $$
 \begin{frame}{Low-tubal-rank Model}
 \vskip -1ex
 \begin{block}{Notation}
+$$\vec{\mathcal{A}}_i\equiv\mathcal{A}(:,i,:),~~~~\mathcal{A}^{(j)}\equiv\mathcal{A}(:,:,j),~~~~\hat{\mathcal{A}} := \texttt{fft}(\mathcal{A}, [], 3)$$
 \vskip -1ex
 $$
 \texttt{bcirc}(\mathcal{A})=\left[
@@ -290,17 +293,142 @@ $$
 \end{frame}
 
 \begin{frame}{Low-tubal-rank Model}
-\begin{block}{Notation}
-~~~~For $\mathcal{A}\in\mathbb{R}^{l\times m\times n}$ 
-$$\mathcal{X}^{(l)}\equiv\mathcal{X}(:,:,l),~~~~\vec{\mathcal{A}}_i\equiv\mathcal{A}(:,i,:),~~~~\mathcal{A}^{(j)}\equiv\mathcal{A}(:,:,j)$$
-$$\hat{\mathcal{A}} := \texttt{fft}(\mathcal{A}, [], 3)$$
+\begin{block}{t-Product}
+$$\mathcal{A}*\mathcal{B}=\texttt{fold}(\texttt{bcirc}(\mathcal{A})\cdot\texttt{unfold}(\mathcal{B}))$$
 \end{block}
+\textbf{Example}. Let $\mathcal{A}\in\mathbb{R}^{3\times 2 \times 2}$ with frontal faces
+$$
+%\renewcommand\arraystretch{1.3}
+A^{(1)}=\left[
+\begin{array}{c c}
+  1 & 0 \\
+  0 & 2 \\
+  -1 & 3
+\end{array}
+\right]~~~~
+\text{and}~~~~A^{(2)}=\mleft[
+\begin{array}{c c}
+  -2 & 1 \\
+  -2 & 7 \\
+  0 & -1
+\end{array}
+\mright],
+$$
+and let $\vec{\mathcal{B}}\in\mathbb{R}^{2\times 1 \times 2}$ with frontal faces
+$$
+B^{(1)}=
+\left[\begin{matrix}
+3\\
+-1
+\end{matrix}\right]
+~~~~\text{and}~~~~
+B^{(2)}=
+\left[\begin{matrix}
+-2\\
+-3
+\end{matrix}\right].
+$$
 \end{frame}
 
 \begin{frame}{Low-tubal-rank Model}
-\begin{block}{Definetion. t-Product}
-$$\mathcal{A}*\mathcal{B}=\texttt{fold}(\texttt{bcirc}(\mathcal{A})\cdot\texttt{unfold}(\mathcal{B}))$$
+$$
+\begin{aligned}
+\mathcal{A}*\vec{\mathcal{B}} & =\texttt{fold}\left(
+\left[\begin{array}{cc|cc}
+1 & 0 & -2 & 1\\
+0 & 2 & -2 & 7\\
+-1 & 3 & 0 & -1\\
+\hline
+-2 & 1 & 1 & 0\\
+-2 & 7 & 0 & 2\\
+0 & -1 & -1 & 3
+\end{array}\right]
+\left[\begin{array}{c}
+3\\
+-1\\
+\hline
+-2\\
+-3
+\end{array}\right]
+\right)\\
+& = \texttt{fold}\left(
+\left[\begin{array}{c}
+4\\
+-19\\
+-3\\
+\hline
+-9\\
+-19\\
+-6
+\end{array}\right]
+\right)\in\mathbb{R}^{3\times 1 \times 2}
+\end{aligned}
+$$
+is a $3 \times 1 \times 2$ tensor. In other words, in this example, $\vec{\mathcal{C}} := \mathcal{A} * \vec{\mathcal{B}}$ is a $3\times 2$ matrix, oriented as a lateral slice of a third-order tensor.
+\end{frame}
+
+\begin{frame}{Low-tubal-rank Model}
+\begin{block}{Linear combinations}
+~~~~Given $k$ tubal scalars $\mathbf{c}_j\in\mathbb{R}^{1\times 1\times n},~j=1,2,\cdots,k$, a t-linear combination of $\vec{\mathcal{X}}_j\in \mathbb{R}^{m\times 1\times n},~j=1,2,\cdots,k$ is defined as
+$$
+\vec{\mathcal{X}}_1*\mathbf{c}_1 + \vec{\mathcal{X}}_2 * \mathbf{c}_2 + \cdots + \vec{\mathcal{X}}_k * \mathbf{c}_k \equiv \mathcal{X} * \vec{\mathcal{C}}
+$$
+where
+$$
+\mathcal{X} := \left[\vec{\mathcal{X}}_1, \vec{\mathcal{X}}_2, \cdots, \vec{\mathcal{X}}_k\right],~~~~\vec{\mathcal{C}}:=\left[\begin{matrix}
+\mathbf{c}_1\\
+\mathbf{c}_2\\
+\vdots\\
+\mathbf{c}_k
+\end{matrix}\right].
+$$
 \end{block}
+\textbf{Example}. Using $\mathcal{A}\in\mathbb{R}^{3\times 2 \times 2}$ and $\vec{\mathcal{B}}\in\mathbb{R}^{2\times 1\times 2}$ frome the previous example, we see that
+
+\end{frame}
+
+\begin{frame}{Low-tubal-rank Model}
+$$
+\begin{aligned}
+\mathcal{A}*\vec{\mathcal{B}} & = \vec{\mathcal{A}}_1 * \mathbf{b}_{11} + \vec{\mathcal{A}}_2 * \mathbf{b}_{21} \\
+& = \texttt{fold}\left(
+\left[\begin{array}{c}
+7\\
+4\\
+-3\\
+\hline
+-8\\
+-6\\
+2
+\end{array}\right]
+\right) + \texttt{fold}\left(
+\left[\begin{array}{c}
+-3\\
+-23\\
+0\\
+\hline
+-1\\
+-13\\
+-8
+\end{array}\right]
+\right)=\texttt{fold}\left(
+\left[\begin{array}{c}
+4\\
+-19\\
+-3\\
+\hline
+-9\\
+-19\\
+-6
+\end{array}\right]
+\right)
+\end{aligned}
+$$
+Thus, $\vec{\mathcal{C}} := \mathcal{A} * \vec{\mathcal{B}}$ is a t-linear combination of the lateral slices of $\mathcal{A}$.
+\end{frame}
+
+\begin{frame}{Low-tubal-rank Model}
+
 \begin{block}{Observation}
 ~~~~Given $\mathbf{a}, \mathbf{b} \in \mathbb{K}_n$, $\mathbf{a} * \mathbf{b}$ can be computed as
 $$
@@ -320,35 +448,62 @@ $$
 \mathcal{A}=\mathcal{U}*\mathcal{S}*\mathcal{V}^{T}=\sum_{i=1}^{\text{min}(l,m)}\vec{\mathcal{U}}_i*\mathbf{s}_i*\vec{\mathcal{V}}_i^T, ~~~~\mathbf{s}_i :=\mathcal{S}(i,i,:)
 $$
 \end{block}
-\vskip -1.5ex
+\vskip -2ex
 \begin{figure}
 	\centering  
-	\includegraphics[width=0.7\linewidth]{figs/tsvd_arch.png}
+	\includegraphics[width=0.7\linewidth]{figs/tsvd_arch.png}\\
+	The t-SVD of an $l \times m \times n$ tensor
 	\label{fig:tsvd_arch}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Tubal-Tensor Sparse Coding}
-\large
-\begin{mdframed}[backgroundcolor=brown!20,roundcorner=8pt,leftmargin=60pt,rightmargin=60pt]
+\begin{block}{Tubal-tensor Linear Combination}
+A two-dimensional image of size $m \times k$ is represented by a third-order tensor $\mathcal{X}\in \mathbb{R}^{m\times 1 \times k}$, which can be approximated by the t-product between $\mathcal{D}\in\mathbb{R}^{m\times r\times k}$ and $\mathcal{C}\in\mathbb{R}^{r\times 1 \times k}$ as
 $$
 \begin{aligned}
-\min_{\mathcal{D},\mathcal{C}}&~~~\frac{1}{2}\|\mathcal{A}-\mathcal{D}*\mathcal{C}\|_{F}^{2}+\beta\|\mathcal{C}\|_1 \\
-\text{s.t.} &~~~ \|\vec{\mathcal{D}}_j\|_F^2\le 1, j=1,2,\cdots,r
+\mathcal{X} & = \mathcal{D} * \mathcal{C}\\
+& = \mathcal{D}(:,1,:)*\mathcal{C}(1,1,:) + \mathcal{D}(:,2,:)*\mathcal{C}(2,1,:) + \cdots + \mathcal{D}(:,r,:)*\mathcal{C}(r,1,:)
 \end{aligned}
 $$
-$$\text{where}~\mathcal{D}\in\mathbb{R}^{l\times r\times n} ~\text{and} ~r > l$$
-\end{mdframed}
+\end{block}
+\vskip -2ex
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.5\linewidth]{figs/tubaltensor_arch.png}\\
+	Tubal-tensor sparse coding model is based on circular convolution operation
+	\label{fig:tubaltensor_arch}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Tubal-Tensor Sparse Coding}
+\begin{block}{Tubal-tensor Sparse Representation}
+~~~~A third-order tensor $\mathcal{X} \in \mathbb{R}^{m\times n\times k}$ is presented by $n$ images of size $m \times k$. Let $\mathcal{D} \in \mathbb{R}^{m\times r\times k}$ be the tensor dictionary, where each lateral slice $\mathcal{D}(:,j,:)$ represents a tensor basis, and $\mathcal{C}\in \mathbb{R}^{r\times n \times k}$ be the tensor corresponding representations. Each image $\mathcal{X}(:,j,:)$ is approximated by a sparse t-linear combination of those tensor bases. Tubal-tensor sparse coding (TubSC) model can be formulated as
+$$
+\begin{aligned}
+\min_{\mathcal{D},\mathcal{C}}&~~~\frac{1}{2}\|\mathcal{X}-\mathcal{D}*\mathcal{C}\|_{F}^{2}+\beta\|\mathcal{C}\|_1 \\
+\text{s.t.} &~~~ \|\mathcal{D}(:,j,:)\|_F^2\le 1, j=1,2,\cdots,r.
+\end{aligned}
+$$
+\end{block}
+~~~~~TubSC model can be solved alternately by \textbf{tensor coefficients learning} and \textbf{tensor dictionary learning}.
 \end{frame}
 
 \begin{frame}{Tubal-Tensor Sparse Coding}
 \begin{block}{Tensor Coefficients Learning}
 $$
-\min_{\mathcal{C}}:=f(\mathcal{C})+\beta g(\mathcal{C})
+\min_{\mathcal{C}}~~\frac{1}{2}\|\mathcal{X}-\mathcal{D}*\mathcal{C}\|_F^2+\beta\|\mathcal{C}\|_1
 $$
+~~~~According to low-tubal-tensor model, the problem can be transformed to
 $$
-f(\mathcal{C}) = \frac{1}{2}\|\mathcal{A}-\mathcal{D}*\mathcal{C}\|_F^2, ~~g(\mathcal{C}) = \|\mathcal{C}\|_1
+\min_{\texttt{unfold}(\mathcal{C})}~~\frac{1}{2}\|\texttt{unfold}(\mathcal{X})-\texttt{bcirc}(\mathcal{D})\cdot\texttt{unfold}(\mathcal{C})\|_F^2+\beta\|\texttt{unfold}(\mathcal{C})\|_1.
 $$
+It can be solved by Iterative Shrinkage Thresholding algorithm based on Tensor (\textbf{ISTT}), which is rewritten as
+$$
+\min_{\mathcal{C}}~~f(\mathcal{C})+\beta g(\mathcal{C}),
+$$
+where $f(\mathcal{C}) = \frac{1}{2}\|\mathcal{X}-\mathcal{D}*\mathcal{C}\|_F^2,~\text{and}~g(\mathcal{C}) = \|\mathcal{C}\|_1$.
 \end{block}
 \end{frame}
 
@@ -357,28 +512,20 @@ $$
 \vskip -1ex
 $$
 \begin{aligned}
-\min_{\mathcal{D}}&~~~\frac{1}{2}\|\mathcal{A}-\mathcal{D}*\mathcal{C}\|_{F}^{2}+\beta\|\mathcal{C}\|_1 \\
-\text{s.t.} &~~~ \|\vec{\mathcal{D}}_j\|_F^2\le 1, j=1,2,\cdots,r.
+\min_{\mathcal{D}}&~~~\frac{1}{2}\|\mathcal{X}-\mathcal{D}*\mathcal{C}\|_{F}^{2}\\
+\text{s.t.} &~~~ \|\mathcal{D}(:,j,:)\|_F^2\le 1, j=1,2,\cdots,r.
 \end{aligned}
 $$
 ~~~~We transform this problem into the frequecy domain:
 \vskip -1ex
 $$
 \begin{aligned}
-\min_{\hat{\mathcal{D}}^{(l)}}&~~~\sum_{l=1}^{n}\|\hat{\mathcal{X}}^{(l)}-\hat{\mathcal{D}}^{(l)}\hat{\mathcal{C}}^{(l)}\|_F^2,l=1,2,\cdots,n \\
-\text{s.t.}&~~~\sum_{l=1}^{n}\|\hat{\mathcal{D}}^{(l)}(:,j)\|_F^2\le n, j=1,2,\cdots,r.
+\min_{\hat{\mathcal{D}}^{(l)}}&~~~\sum_{l=1}^{k}\|\hat{\mathcal{X}}^{(l)}-\hat{\mathcal{D}}^{(l)}\hat{\mathcal{C}}^{(l)}\|_F^2,l=1,2,\cdots,k\\
+\text{s.t.}&~~~\sum_{l=1}^{k}\|\hat{\mathcal{D}}^{(l)}(:,j)\|_F^2\le k, j=1,2,\cdots,r.
 \end{aligned}
 $$
 ~~~~Then adopt the Lagrange dual (Lee et al. 2007) to solve the dual variables by Newton’s algorithm.
 \end{block}
-\end{frame}
-
-\begin{frame}{Tubal-Tensor Sparse Coding}
-\begin{figure}
-	\centering  
-	\includegraphics[width=0.9\linewidth]{figs/2dsc_arch.png}
-	\label{fig:2dsc_arch}
-\end{figure}
 \end{frame}
 
 \begin{frame}{Agenda}
