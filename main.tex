@@ -368,7 +368,7 @@ is a $3 \times 1 \times 2$ tensor. In other words, in this example, $\vec{\mathc
 \end{frame}
 
 \begin{frame}{Low-tubal-rank Model}
-\begin{block}{Linear combinations}
+\begin{block}{t-Linear combinations}
 ~~~~Given $k$ tubal scalars $\mathbf{c}_j\in\mathbb{R}^{1\times 1\times n},~j=1,2,\cdots,k$, a t-linear combination of $\vec{\mathcal{X}}_j\in \mathbb{R}^{m\times 1\times n},~j=1,2,\cdots,k$ is defined as
 $$
 \vec{\mathcal{X}}_1*\mathbf{c}_1 + \vec{\mathcal{X}}_2 * \mathbf{c}_2 + \cdots + \vec{\mathcal{X}}_k * \mathbf{c}_k \equiv \mathcal{X} * \vec{\mathcal{C}}
@@ -383,7 +383,7 @@ $$
 \end{matrix}\right].
 $$
 \end{block}
-\textbf{Example}. Using $\mathcal{A}\in\mathbb{R}^{3\times 2 \times 2}$ and $\vec{\mathcal{B}}\in\mathbb{R}^{2\times 1\times 2}$ frome the previous example, we see that
+\textbf{Example}. Using $\mathcal{A}\in\mathbb{R}^{3\times 2 \times 2}$ and $\vec{\mathcal{B}}\in\mathbb{R}^{2\times 1\times 2}$ from the previous example, we see that
 
 \end{frame}
 
@@ -457,7 +457,7 @@ $$
 \end{figure}
 \end{frame}
 
-\begin{frame}{Tubal-Tensor Sparse Coding}
+\begin{frame}{Tubal-tensor Sparse Coding}
 \begin{block}{Tubal-tensor Linear Combination}
 A two-dimensional image of size $m \times k$ is represented by a third-order tensor $\mathcal{X}\in \mathbb{R}^{m\times 1 \times k}$, which can be approximated by the t-product between $\mathcal{D}\in\mathbb{R}^{m\times r\times k}$ and $\mathcal{C}\in\mathbb{R}^{r\times 1 \times k}$ as
 $$
@@ -477,7 +477,7 @@ $$
 
 \end{frame}
 
-\begin{frame}{Tubal-Tensor Sparse Coding}
+\begin{frame}{Tubal-tensor Sparse Coding}
 \begin{block}{Tubal-tensor Sparse Representation}
 ~~~~A third-order tensor $\mathcal{X} \in \mathbb{R}^{m\times n\times k}$ is presented by $n$ images of size $m \times k$. Let $\mathcal{D} \in \mathbb{R}^{m\times r\times k}$ be the tensor dictionary, where each lateral slice $\mathcal{D}(:,j,:)$ represents a tensor basis, and $\mathcal{C}\in \mathbb{R}^{r\times n \times k}$ be the tensor corresponding representations. Each image $\mathcal{X}(:,j,:)$ is approximated by a sparse t-linear combination of those tensor bases. Tubal-tensor sparse coding (TubSC) model can be formulated as
 $$
@@ -490,7 +490,7 @@ $$
 ~~~~~TubSC model can be solved alternately by \textbf{tensor coefficients learning} and \textbf{tensor dictionary learning}.
 \end{frame}
 
-\begin{frame}{Tubal-Tensor Sparse Coding}
+\begin{frame}{Tubal-tensor Sparse Coding}
 \begin{block}{Tensor Coefficients Learning}
 $$
 \min_{\mathcal{C}}~~\frac{1}{2}\|\mathcal{X}-\mathcal{D}*\mathcal{C}\|_F^2+\beta\|\mathcal{C}\|_1
@@ -507,7 +507,7 @@ where $f(\mathcal{C}) = \frac{1}{2}\|\mathcal{X}-\mathcal{D}*\mathcal{C}\|_F^2,~
 \end{block}
 \end{frame}
 
-\begin{frame}{Tubal-Tensor Sparse Coding}
+\begin{frame}{Tubal-tensor Sparse Coding}
 \begin{block}{Tensor Dictionary Learning}
 \vskip -1ex
 $$
@@ -595,7 +595,7 @@ $\begin{array}{l | l | l}
 \begin{figure}
 	\centering  
 	\includegraphics[width=0.5\linewidth]{figs/cutensor_datastorage.png}\hfill  \includegraphics[width=0.5\linewidth]{figs/cutensor_datastructure.png}\\
-	Tensors are stored as a 1D array in memory\hfill Data structures in tensor computations
+	Tensors are stored as a 1D array in memory\hfill Data structures in tensor computations~~~~~
 	\label{fig:cutensor_datastructure}
 \end{figure}
 \vfill
@@ -636,7 +636,76 @@ $\begin{array}{l | l | l |l}
 \end{frame}
 
 \begin{frame}{TenDeC++ (CPU)}
-
+\begin{columns}
+\column{0.55\linewidth}
+TenDeC++ is a new library for tensor decompositions in C++, in which a novel underlying technology \textbf{PointerDefomer} leveraging he unique pointer is proposed to further explore potentials of C++. TenDeC++ supports 
+\begin{itemize}
+\item Canonical Polyadic
+\item Tucker Decomposition
+\item Tensor-train Decomposition
+\item t-SVD
+\end{itemize}
+Compared with Tensorly in Python and TensorLab in MATLAB, TenDeC++ reduces more than \textbf{83.7\%}, \textbf{53.3\%} decomposition time, and supports \textbf{2.5$\times$}, \textbf{2$\times$} of tensor.
+\column{0.45\linewidth}
+\vskip -2ex
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tendecpp_arch.png} \\
+	System architecture of the TenDeC++ library
+	\label{fig:tendecpp_arch}
+\end{figure}
+\end{columns}
+\vfill
 \end{frame}
 
+\begin{frame}{TenDeC++ (CPU)}
+\framesubtitle{PointerDeformer}
+A 3D tensor is stored as a 1D array in memory. Accessing these data with different sequences can form size-specific matrices including three mode-$n$views: column-major, row-major, and concatenation views. These virtual views motivate us to design PointerDeformer to skip the time-consuming unfolding operation in C++.
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/pointerdeformer_example.png}
+	\label{fig:pointerdeformer_example}
+\end{figure}
+\end{frame}
+
+\begin{frame}{TenDeC++ (CPU)}
+\framesubtitle{Optimized Basic Tensor Operation: $n$-mode Product}
+Compare with traditional process, the optimized process does not need the time-consuming unfold/fold operations. Instead, PointerDeformer achieves the virtual transformation by accessing the data with specific sequence in memory.
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.6\linewidth]{figs/tendecpp_optimized.png}
+	\label{fig:tendecpp_optimized}
+\end{figure}
+\end{frame}
+
+\begin{frame}{TenDeC++ (CPU)}
+\framesubtitle{Other Acceleration Techniques}
+\large
+\begin{itemize}
+\item Exploit Symmetry with PointerDefomer
+\item Exploit Conjugate Symmetry for t-SVD Decomposition
+\end{itemize}
+\end{frame}
+
+\begin{frame}{TenDeC++ (CPU)}
+\framesubtitle{Performance}
+\vskip -4.6ex
+\begin{columns}
+\column{0.5\linewidth}
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tendecpp_eval1.png}\\
+	Running time of Tucker (TT) decomposition
+	\label{fig:tendecpp_eval1}
+\end{figure}
+\column{0.5\linewidth}
+\vskip -0.6ex
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tendecpp_eval2.png}\\
+	Running time of t-SVD
+	\label{fig:tendecpp_eval2}
+\end{figure}
+\end{columns}
+\end{frame}
 \end{document}
