@@ -361,26 +361,26 @@ $$
 
 \begin{frame}{Low-tubal-rank Model}
 \vskip -1ex
-\begin{block}{Notation}
+\begin{block}{Notations}
 $$\vec{\mathcal{A}}_i\equiv\mathcal{A}(:,i,:),~~~~\mathcal{A}^{(j)}\equiv\mathcal{A}(:,:,j),~~~~\hat{\mathcal{A}} := \texttt{fft}(\mathcal{A}, [], 3)$$
 \vskip -1ex
 $$
 \texttt{bcirc}(\mathcal{A})=\left[
   \begin{matrix}
-   A^{(1)} & A^{(n)} & A^{(n-1)} & \cdots &A^{(2)} \\
-   A^{(2)} & A^{(1)} & A^{(n)} & \cdots &A^{(3)} \\
+   \mathbf{A}^{(1)} & \mathbf{A}^{(n)} & \mathbf{A}^{(n-1)} & \cdots & \mathbf{A}^{(2)} \\
+   \mathbf{A}^{(2)} & \mathbf{A}^{(1)} & \mathbf{A}^{(n)} & \cdots & \mathbf{A}^{(3)} \\
    \vdots & \vdots & \vdots & \ddots & \vdots \\
-    A^{(n)} & A^{(n-1)} & \cdots &A^{(2)} & A^{(1)}
+    \mathbf{A}^{(n)} & \mathbf{A}^{(n-1)} & \cdots & \mathbf{A}^{(2)} & \mathbf{A}^{(1)}
   \end{matrix}
   \right]
 $$
 $$
 \texttt{unfold}(\mathcal{A})=\left[
   \begin{matrix}
-    A^{(1)} \\
-    A^{(2)} \\
+    \mathbf{A}^{(1)} \\
+    \mathbf{A}^{(2)} \\
     \vdots \\
-    A^{(n)}
+    \mathbf{A}^{(n)}
   \end{matrix}
 \right], ~~~~~~~~\texttt{fold}(\texttt{unfold}(\mathcal{A}))=\mathcal{A}
 $$
@@ -394,14 +394,14 @@ $$\mathcal{A}*\mathcal{B}=\texttt{fold}(\texttt{bcirc}(\mathcal{A})\cdot\texttt{
 \textbf{Example}. Let $\mathcal{A}\in\mathbb{R}^{3\times 2 \times 2}$ with frontal faces
 $$
 %\renewcommand\arraystretch{1.3}
-A^{(1)}=\left[
+\mathbf{A}^{(1)}=\left[
 \begin{array}{c c}
   1 & 0 \\
   0 & 2 \\
   -1 & 3
 \end{array}
 \right]~~~~
-\text{and}~~~~A^{(2)}=\mleft[
+\text{and}~~~~\mathbf{A}^{(2)}=\mleft[
 \begin{array}{c c}
   -2 & 1 \\
   -2 & 7 \\
@@ -411,13 +411,13 @@ A^{(1)}=\left[
 $$
 and let $\vec{\mathcal{B}}\in\mathbb{R}^{2\times 1 \times 2}$ with frontal faces
 $$
-B^{(1)}=
+\mathbf{B}^{(1)}=
 \left[\begin{matrix}
 3\\
 -1
 \end{matrix}\right]
 ~~~~\text{and}~~~~
-B^{(2)}=
+\mathbf{B}^{(2)}=
 \left[\begin{matrix}
 -2\\
 -3
