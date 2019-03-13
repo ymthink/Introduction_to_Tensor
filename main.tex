@@ -45,15 +45,34 @@ in post Moore’s Law era!}
 \end{frame}
 
 \begin{frame}{Background}
-\large Multidimensional data of exceedingly huge volume, variety and structural richness become ubiquitous across disciplines in engineering and data science:
-\begin{itemize}
-    \item multimedia data like speech and video
-    \item remote sensing data
-    \item medical and biological data
-    \item seismic data
-\end{itemize}
-\vskip 0.2\margin
-\large Some data can have more meaningful representation using multi-way arrays -- \textbf{tensor}, rather than matrices (two-way arrays).
+~~In a data deluge–era sensing system, the number and resolution of the sensors grow to the point that multidimensional data of exceedingly huge volume, variety and structural richness become ubiquitous across disciplines in engineering and data science.
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/data_deluge.png}
+	\label{fig:data_deluge}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Background}
+\begin{columns}
+\column{0.55\linewidth}
+~~Many problems in computational neuroscience, neuroinformatics, pattern/image recognition, signal processing and machine learning generate massive amounts of multidimensional data with multiple aspects and high dimensionality. These data have four ``V'' characters, as shown in the right figure.
+
+~
+
+~~\textbf{Tensor} provides a natural and compact representation for such massive multidimensional data via suitable low-rank approximations, of which the dynamic analysis allows us to discover meaningful hidden structures of complex data and to perform generalizations by capturing multi-linear and multi-aspect relationships. 
+\column{0.5\linewidth}
+\vskip -6.6ex
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.95\linewidth]{figs/4v_characters.png}\\
+	Volume - scale of data\\
+	Variety - different forms of data\\
+	Veracity - uncertainty of data\\
+	Velocity - analysis of streaming data
+	\label{fig:4v_characters}
+\end{figure}
+\end{columns}
 \end{frame}
 
 \begin{frame}{What is tensor?}
@@ -75,7 +94,6 @@ in post Moore’s Law era!}
 \end{frame}
 
 \begin{frame}{Tensor fibers}
-\vskip -3ex
 \begin{figure}
 	\centering  
 	\includegraphics[width=\linewidth]{figs/tensor_fibers}
@@ -113,7 +131,47 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
 
 \end{frame}
 
+\begin{frame}{Tensor notations}
+\begin{itemize}
+\item Scalars are denoted by lowercase letters, e.g., $a$.
+\item Vectors (tensors of order one) are denoted by boldface lowercase letters, e.g., $\mathbf{a}$.
+\item Matrices (tensors of order two) are denoted by boldface capital letters, e.g., $\mathbf{A}$.
+\item Higher-order tensors (order three or higher) are denoted by boldface Euler script letters, e.g., $\mathcal{X}$.
+\item  The $n$-th element in a sequence is denoted by a superscript in parentheses, e.g., $\mathbf{A}^{(n)}$ denotes the $n$-th matrix in a sequence.
+\item $n$-mode product of a tensor $\mathcal{X}\in\mathbb{R}^{I_1 \times I_2 \times\cdots\times I_d}$ with a matrix $\mathbf{U}\in\mathbb{R}^{J\times I_n}$ is denoted by $\mathcal{X}\times_n \mathbf{U}$ and is of size $I_1 \times \cdots \times I_{n-1} \times J \times I_{n+1} \times \cdots \times I_d$,
+$$
+(\mathcal{X}\times_n\mathbf{U})_{i_1\cdots i_{n-1}ji_{n+1}\cdots i_d}=\sum_{i_n=1}^{I_n}x_{i_1i_2\cdots i_d}u_{ji_n}.
+$$
+\end{itemize}
+\end{frame}
 
+\begin{frame}{Tensor notations}
+\begin{itemize}
+\item The Kronecker product of matrices $\mathbf{A}\in\mathbb{R}^{I\times J}$ and $\mathbf{A}\in\mathbb{R}^{K\times L}$ is denoted by $\mathbf{A} \otimes \mathbf{B}$.  The result is a matrix of size $(IK) \times (JL)$ and defined by
+$$
+\begin{aligned}
+\mathbf{A} \otimes \mathbf{B} &= 
+\left[\begin{matrix}
+a_{11}\mathbf{B} & a_{12}\mathbf{B} & \cdots & a_{1J}\mathbf{B}\\
+a_{21}\mathbf{B} & a_{22}\mathbf{B} & \cdots & a_{2J}\mathbf{B}\\
+\vdots & \vdots & \ddots & \vdots\\
+a_{I1}\mathbf{B} & a_{I2}\mathbf{B} & \cdots & a_{IJ}\mathbf{B}\\
+\end{matrix}\right] \\
+&=
+\left[\begin{matrix}
+\mathbf{a}_1\otimes\mathbf{b}_1 & \mathbf{a}_1\otimes\mathbf{b}_2 & \mathbf{a}_1\otimes\mathbf{b}_3 & \cdots & \mathbf{a}_J\otimes\mathbf{b}_{L-1} & \mathbf{a}_J\otimes\mathbf{b}_L
+\end{matrix}\right].
+\end{aligned}
+$$
+\item The Khatri-Rao product is the ``matching columnwise'' Kronecker product. Given matrices $\mathbf{A} \in \mathbb{R}^{I\times K}$ and $\mathbf{B} \in \mathbb{R}^{J\times K}$, their Khatri–Rao product is denoted by $\mathbf{A} \odot \mathbf{B}$. The result is a matrix of size $(IJ) \times K$ defined by
+$$
+\mathbf{A}\odot\mathbf{B}=
+\left[\begin{matrix}
+\mathbf{a}_1\otimes\mathbf{b}_1 & \mathbf{a}_2\otimes\mathbf{b}_2 & \cdots \mathbf{a}_K\otimes\mathbf{b}_K
+\end{matrix}\right].
+$$
+\end{itemize}
+\end{frame}
 
 \begin{frame}{Agenda}
 \begin{itemize}
@@ -122,6 +180,24 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
     \large \item{Transform-based Tensor Model and Applications}
     \large \item{Tensor Computations (cuTensor, TensorDeC$++$)}
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Rank-One Tensor}
+~~An $N$-way tensor $\mathcal{X}\in\mathbb{R}^{I_1\times I_2\times\cdots\times I_d}$ is \textit{rank one} if it can be written as the outer product of $d$ vectors:
+$$
+\mathcal{X}=\mathbf{a}^{(1)}\circ\mathbf{a}^{(2)}\circ\cdots\circ\mathbf{a}^{(d)}.
+$$
+%The symbol ``$\circ$'' represents the vector outer product. This means that each element 
+%of the tensor is the product of the corresponding vector elements:
+%$$
+%x_{i_1i_2\cdots i_d}=a_{i_1}^{(1)}a_{i_2}^{(2)}\cdots a_{i_d}^{(d)}~~\text{for all}~1\leq i_n\leq I_n.
+%$$
+\textbf{example}. \textit{Rank-one} third-order tensor, $\mathcal{X} = a \circ b \circ c$. The $(i, j, k)$ element of $\mathcal{X}$ is given by $x_{ijk} = a_ib_jc_k$.
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.45\linewidth]{figs/rankone_tensor.png}\\
+	\label{fig:rankone_tensor}
+\end{figure}
 \end{frame}
 
 \begin{frame}{CP Decomposition}
@@ -133,12 +209,18 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
 \end{figure}
 \begin{columns}
 \column{0.5\linewidth}
-\vskip -10ex
-\begin{align*}
-\underline{\mathbf{X}}&\approx\sum_{r=1}^{R}\lambda_{r}\mathbf{b}_{r}^{(1)}\circ\mathbf{b}_{r}^{(2)}\circ\cdots\circ\mathbf{b}_{r}^{(N)} \\
-&=\underline{\mathbf{\Lambda}}\times_{1}\mathbf{B}^{(1)}\times_{2}\mathbf{B}^{(2)}\cdots\times_{N}\mathbf{B}^{(N)} \\
-&=[\![\mathbf{\Lambda};\mathbf{B}^{(1)},\mathbf{B}^{(1)},\cdots,\mathbf{B}^{(N)}]\!]
-\end{align*}
+\vskip -6ex
+\begin{mdframed}[backgroundcolor=brown!20,roundcorner=8pt,leftmargin=15pt,rightmargin=15pt]
+\centering
+\vskip -3ex
+$$
+\begin{aligned}
+\mathcal{X}&\approx\sum_{r=1}^{R}\lambda_{r}\mathbf{a}_{r}\circ\mathbf{b}_{r}\circ\mathbf{c}_{r} \\
+&=\mathbf{\Lambda}\times_{1}\mathbf{A}\times_{2}\mathbf{B}\times_{3}\mathbf{C} \\
+&=[\![\mathbf{\Lambda};\mathbf{A},\mathbf{B},\mathbf{C}]\!]
+\end{aligned}
+$$
+\end{mdframed}
 
 \column{0.5\linewidth}
 \vskip -8ex
@@ -150,6 +232,7 @@ $\mathbf{A}_{(i)}$ means mode-$i$ unfolding.
 
 \end{columns}
 \end{frame}
+
 
 \begin{frame}{CP Decomposition}
 \large
@@ -178,7 +261,7 @@ CP (CANDECOMP/PARAFAC) & Kiers, 2000
 \begin{mdframed}[backgroundcolor=brown!20,roundcorner=8pt,leftmargin=60pt,rightmargin=60pt]
 \centering
 $
-\underline{\mathbf{Y}}=\underline{\mathbf{G}}\times_{1}\mathbf{A}\times_{2}\mathbf{B}\times_{3}\mathbf{C}+\mathbf{E}=[\![\mathbf{G};\mathbf{A},\mathbf{B},\mathbf{C}]\!]+\underline{\mathbf{E}}
+\mathcal{Y}=\mathcal{G}\times_{1}\mathbf{A}\times_{2}\mathbf{B}\times_{3}\mathbf{C}+\mathcal{E}=[\![\mathcal{G};\mathbf{A},\mathbf{B},\mathbf{C}]\!]+\mathcal{E}
 $
 \end{mdframed}
 \vskip -0.5ex
@@ -205,52 +288,64 @@ N-mode SVD & Vasilescu and Terzopoulos, 2002
 \end{table}
 \end{frame}
 
-\begin{frame}{Tensor Train Decomposition}
-\large
-\begin{block}{Low-rank Decomposition}
-$$
-\begin{aligned}
-&\mathbf{A}=\mathbf{G}_{1}\mathbf{G}_{2}  \\
-&\mathbf{G}_{1}\text{: collection of rows, }\mathbf{G}_{2}\text{: collection of columbs}\\
-&\mathbf{A}_{i_1i_2}=\underbrace{\mathbf{G}_1(i_1)}_{1\times R}\underbrace{\mathbf{G}_2(i_2)}_{R\times 1}
-\end{aligned}
-$$
-\end{block}
-\begin{figure}
-	\centering  
-	\includegraphics[width=0.45\linewidth]{figs/tt_lowrank.png}
-	\label{fig:tt_lowrank}
-\end{figure}
-\end{frame}
+%\begin{frame}{Tensor Train Decomposition}
+%\large
+%\begin{block}{Low-rank Decomposition}
+%$$
+%\begin{aligned}
+%&\mathbf{A}=\mathbf{G}_{1}\mathbf{G}_{2}  \\
+%&\mathbf{G}_{1}\text{: collection of rows, }\mathbf{G}_{2}\text{: collection of columbs}\\
+%&\mathbf{A}_{i_1i_2}=\underbrace{\mathbf{G}_1(i_1)}_{1\times R}\underbrace{\mathbf{G}_2(i_2)}_{R\times 1}
+%\end{aligned}
+%$$
+%\end{block}
+%\begin{figure}
+%	\centering  
+%	\includegraphics[width=0.45\linewidth]{figs/tt_lowrank.png}
+%	\label{fig:tt_lowrank}
+%\end{figure}
+%\end{frame}
 
 \begin{frame}{Tensor Train Decomposition}
 \large
 \begin{block}{TT Form}
 $$
-\underline{\mathbf{A}}_{i_1i_2\cdots i_N}=\underbrace{\mathbf{G}_{1}(i_1)}_{1\times R}\underbrace{\mathbf{G}_{2}(i_2)}_{R\times R}\cdots\underbrace{\mathbf{G}_{N}(i_N)}_{R\times 1}
+\mathcal{A}_{i_1i_2\cdots i_d}=\underbrace{\mathcal{G}_{1}(i_1)}_{1\times R}\underbrace{\mathcal{G}_{2}(i_2)}_{R\times R}\cdots\underbrace{\mathcal{G}_{d}(i_d)}_{R\times 1}
 $$
 \end{block}
+\normalsize
 \begin{figure}
 	\centering  
-	\includegraphics[width=0.9\linewidth]{figs/tt_form_example.png}
+	\includegraphics[width=0.45\linewidth]{figs/tensor_train_arch.png} \\
+	A graphical representation of the tensor train decomposition
+	\label{fig:tensor_train_arch}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Tensor Ring Decomposition}
+\textbf{Example}.
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/tt_form_example.png}
 	\label{fig:tt_form_example}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Tensor Ring Decomposition}
 \large
-
 \begin{block}{TR Form}
 $$
 \begin{aligned}
-\underline{\mathbf{A}}_{i_1i_2\cdots i_N}=\text{Tr}\{\mathbf{Z}_1(i_1)\mathbf{Z}_2(i_2)\cdots\mathbf{Z}_N(i_N)\}
-=\text{Tr}\left\{\prod_{k=1}^{N}\mathbf{Z}_k(i_k)\right\}
+\mathcal{A}_{i_1i_2\cdots i_d}=\text{Tr}\{\mathcal{Z}_1(i_1)\mathcal{Z}_2(i_2)\cdots\mathcal{Z}_d(i_d)\}
+=\text{Tr}\left\{\prod_{k=1}^{d}\mathcal{Z}_k(i_k)\right\}
 \end{aligned}
 $$
 \end{block}
+\normalsize
 \begin{figure}
 	\centering  
-	\includegraphics[width=0.55\linewidth]{figs/tensor_ring_arch.png}
+	\includegraphics[width=0.45\linewidth]{figs/tensor_ring_arch.png} \\
+	A graphical representation of the tensor ring decomposition
 	\label{fig:tensor_ring_arch}
 \end{figure}
 \end{frame}
@@ -369,17 +464,17 @@ is a $3 \times 1 \times 2$ tensor. In other words, in this example, $\vec{\mathc
 
 \begin{frame}{Low-tubal-rank Model}
 \begin{block}{t-Linear combinations}
-~~~~Given $k$ tubal scalars $\mathbf{c}_j\in\mathbb{R}^{1\times 1\times n},~j=1,2,\cdots,k$, a t-linear combination of $\vec{\mathcal{X}}_j\in \mathbb{R}^{m\times 1\times n},~j=1,2,\cdots,k$ is defined as
+~~~~Given $k$ tubal scalars $\vec{\mathbf{c}}_j\in\mathbb{R}^{1\times 1\times n},~j=1,2,\cdots,k$, a t-linear combination of $\vec{\mathcal{X}}_j\in \mathbb{R}^{m\times 1\times n},~j=1,2,\cdots,k$ is defined as
 $$
-\vec{\mathcal{X}}_1*\mathbf{c}_1 + \vec{\mathcal{X}}_2 * \mathbf{c}_2 + \cdots + \vec{\mathcal{X}}_k * \mathbf{c}_k \equiv \mathcal{X} * \vec{\mathcal{C}}
+\vec{\mathcal{X}}_1*\vec{\mathbf{c}}_1 + \vec{\mathcal{X}}_2 * \vec{\mathbf{c}}_2 + \cdots + \vec{\mathcal{X}}_k * \vec{\mathbf{c}}_k \equiv \mathcal{X} * \vec{\mathcal{C}}
 $$
 where
 $$
 \mathcal{X} := \left[\vec{\mathcal{X}}_1, \vec{\mathcal{X}}_2, \cdots, \vec{\mathcal{X}}_k\right],~~~~\vec{\mathcal{C}}:=\left[\begin{matrix}
-\mathbf{c}_1\\
-\mathbf{c}_2\\
+\vec{\mathbf{c}}_1\\
+\vec{\mathbf{c}}_2\\
 \vdots\\
-\mathbf{c}_k
+\vec{\mathbf{c}}_k
 \end{matrix}\right].
 $$
 \end{block}
@@ -390,7 +485,7 @@ $$
 \begin{frame}{Low-tubal-rank Model}
 $$
 \begin{aligned}
-\mathcal{A}*\vec{\mathcal{B}} & = \vec{\mathcal{A}}_1 * \mathbf{b}_{11} + \vec{\mathcal{A}}_2 * \mathbf{b}_{21} \\
+\mathcal{A}*\vec{\mathcal{B}} & = \vec{\mathcal{A}}_1 * \vec{\mathbf{b}}_{11} + \vec{\mathcal{A}}_2 * \vec{\mathbf{b}}_{21} \\
 & = \texttt{fold}\left(
 \left[\begin{array}{c}
 7\\
@@ -430,11 +525,11 @@ Thus, $\vec{\mathcal{C}} := \mathcal{A} * \vec{\mathcal{B}}$ is a t-linear combi
 \begin{frame}{Low-tubal-rank Model}
 
 \begin{block}{Observation}
-~~~~Given $\mathbf{a}, \mathbf{b} \in \mathbb{K}_n$, $\mathbf{a} * \mathbf{b}$ can be computed as
+~~~~Given $\vec{\mathbf{a}}, \vec{\mathbf{b}} \in \mathbb{R}^{1\times 1\times n}$, $\vec{\mathbf{a}} * \vec{\mathbf{b}}$ can be computed as
 $$
-\mathbf{a} * \mathbf{b} := \texttt{ifft}(\hat{\mathbf{a}} \odot \hat{\mathbf{b}}, [], 3),
+\vec{\mathbf{a}} * \vec{\mathbf{b}} := \texttt{ifft}(\hat{\vec{\mathbf{a}}} \circledcirc \hat{\vec{\mathbf{b}}}, [], 3),
 $$
-where $\odot$ of two tubal scalars means pointwise multiplication.\\
+where $\circledcirc$ of two tubal scalars means pointwise multiplication.\\
 ~~~~Factorizations of $\mathcal{A}$ are created (implicitly) by applying the appropriate matrix factorization to each of the $\hat{\mathcal{A}}^{(i)}$
 $$
 \mathcal{A}=\mathcal{Q} * \mathcal{R} \Longleftrightarrow \hat{\mathcal{A}}^{(i)}=\hat{\mathcal{Q}}^{(i)}\hat{\mathcal{R}}^{(i)}.
@@ -538,13 +633,23 @@ $$
 \end{frame}
 
 \begin{frame}{cuTensor-tubal (GPU)}
-\large
+
+\begin{columns}
+\column{0.57\linewidth}
 This library is a general approach to compute low-tubal-rank tensor operations in the frequency domain on GPUs.
 \begin{enumerate}
   \item Obtain the frequency domain representation of the input tensor by performing Fourier transform along the third dimension (called tube-wise DFT) on the GPU;
   \item In the frequency domain, the tensor operations are separated into multiple independent complex matrix computations that possess strong parallelism;
   \item Converting the frequency domain results back to the time domain through inverse Fourier transform along the third dimension on the GPU (called tube-wise inverse DFT).
 \end{enumerate}
+\column{0.45\linewidth}
+\begin{figure}
+	\centering  
+	\includegraphics[width=\linewidth]{figs/cutensor_arch.png}\\
+	System architecture of the cuTensor-tubal library
+	\label{fig:cutensor_arch}
+\end{figure}
+\end{columns}
 \end{frame}
 
 \begin{frame}{cuTensor-tubal (GPU)}
@@ -684,6 +789,13 @@ Compare with traditional process, the optimized process does not need the time-c
 \begin{itemize}
 \item Exploit Symmetry with PointerDefomer
 \item Exploit Conjugate Symmetry for t-SVD Decomposition
+\normalsize
+\vskip 1ex
+Based on the conjugate symmetric property of FFT for real input data, there is $\texttt{conj}(\hat{\mathcal{X}}^{(j)})=\hat{\mathcal{X}}^{(k-j+2)}$, where $j=2,3,\cdots,\lceil\frac{k+1}{2}\rceil$ and $\texttt{conj}(\mathbf{X})$ denotes the conjugate of matrix $\mathbf{X}$. Conjugation on both sides of $\hat{\mathcal{X}}^{(j)}=\hat{\mathcal{U}}^{(j)}\hat{\mathcal{S}}^{(j)}\hat{\mathcal{V}}^{(j)}$,
+$$
+\hat{\mathcal{X}}^{(k-j+2)}=\texttt{conj}(\hat{\mathcal{U}}^{(j)})\cdot\texttt{conj}(\hat{\mathcal{S}}^{(j)})\cdot\texttt{conj}(\hat{\mathcal{V}}^{(j)}).
+$$
+Hence, with the conjugate symmetry, it only needs to preform SVD on \textbf{half} slice in t-SVD decomposition.
 \end{itemize}
 \end{frame}
 
@@ -694,18 +806,28 @@ Compare with traditional process, the optimized process does not need the time-c
 \column{0.5\linewidth}
 \begin{figure}
 	\centering  
-	\includegraphics[width=\linewidth]{figs/tendecpp_eval1.png}\\
-	Running time of Tucker (TT) decomposition
+	\includegraphics[width=\linewidth]{figs/tendecpp_eval3.png}\\
+	Running time of CP decomposition
 	\label{fig:tendecpp_eval1}
 \end{figure}
 \column{0.5\linewidth}
 \vskip -0.6ex
 \begin{figure}
 	\centering  
-	\includegraphics[width=\linewidth]{figs/tendecpp_eval2.png}\\
-	Running time of t-SVD
+	\includegraphics[width=\linewidth]{figs/tendecpp_eval1.png}\\
+	Running time of Tucker decomposition
 	\label{fig:tendecpp_eval2}
 \end{figure}
 \end{columns}
+\end{frame}
+
+\begin{frame}{TenDeC++ (CPU)}
+\framesubtitle{Performance}
+\begin{figure}
+	\centering  
+	\includegraphics[width=0.5\linewidth]{figs/tendecpp_eval2.png}\\
+	Running time of t-SVD
+	\label{fig:tendecpp_eval3}
+\end{figure}
 \end{frame}
 \end{document}
