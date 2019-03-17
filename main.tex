@@ -183,6 +183,7 @@ $$
 \end{itemize}
 \end{frame}
 
+
 \begin{frame}{Rank-One Tensor}
 ~~An $N$-way tensor $\mathcal{X}\in\mathbb{R}^{I_1\times I_2\times\cdots\times I_d}$ is \textit{rank one} if it can be written as the outer product of $d$ vectors:
 $$
@@ -360,6 +361,76 @@ $$
 \end{itemize}
 \end{frame}
 
+
+\begin{frame}{Transform-based Model}
+\begin{block}{Basic Operators}
+~~The operator $\texttt{matview}(\cdot)$ takes a tensor $\mathcal{A}\in\mathbb{C}^{n_1\times n_2\times n_3\times n_4}$ and returns an $n_1n_3n_4\times n_2n_3n_4$ block diagonal matrix, with each block being an $n_1\times n_2$ matrix, defined as
+$$
+\texttt{matview}(\mathcal{A})=\text{diag}(\mathbf{A}^1, \cdots, \mathbf{A}^p, \cdots, \mathbf{A}^P), ~ p\in [P], 
+$$
+and
+$$
+\mathbf{A}^p(i,j)=\mathcal{A}(i,j,k,l), ~p=(l-1)n_3+k, i\in[n_1], ~j\in[n_2], ~k\in [n_3], ~l\in[n_4],
+$$
+where $P=n_3n_4$, and $[n]$ denotes the index set $\{1, 2, \cdots, n\}$. The operator $\texttt{tenview}(\cdot)$ folds $\texttt{matview}(\mathcal{A})$ back to tensor $\mathcal{A}$, i.e.,
+$$
+\texttt{tenview}(\texttt{matview}(\mathcal{A})) = \mathcal{A}.
+$$
+\end{block}
+\end{frame}
+
+\begin{frame}{Transform-based Model}
+\begin{block}{Basic Operators}
+~~Given two fourth-order tensors $\mathcal{A}\in\mathbb{C}^{n_1\times n' \times n_3 \times n_4}$ and $\mathcal{B}\in\mathbb{C}^{n' \times n_2 \times n_3 \times n_4}$, the corresponding $p$-th matrices are $\mathbf{A}^{p} \in \mathbb{C}^{n_1\times n'}$ and $\mathbf{B}^{p} \in \mathbb{C}^{n' \times n_2}$, and their multiplication is well-defined as $\mathbf{C}^p = \mathbf{A}^p\mathbf{B}^p \in \mathbb{C}^{n_1\times n_2}$. Later in the transform domain, we will need the following matrix multiplication of two block diagonal matrices, e.g.,
+$$
+\texttt{matview}(\mathcal{C})=\texttt{matview}(\mathcal{A})\cdot\texttt{matview}(\mathcal{B}),
+$$
+where $\cdot$ denotes the conventional matrix multiplication.
+\end{block}
+\end{frame}
+
+\begin{frame}{Transform-based Model}
+\vskip -1ex
+\begin{block}{Tensor-scalar multiplication}
+~~Given an invertible 2D discrete transform $\mathcal{L}:\mathbb{C}^{1\times 1\times n_3\times n_4} \to \mathbb{C}^{1\times 1\times n_3\times n_4}$, the element-wise multiplication $\circ$, and $\alpha, \beta \in \mathbb{C}^{1\times 1\times n_3\times n_4}$, we define the tensor-scalar multiplication
+$$
+\alpha\bullet\beta\triangleq\mathcal{L}^{-1}(\mathcal{L}(\alpha)\circ\mathcal{L}(\beta)),
+$$
+where $\mathcal{L}^{-1}:\mathbb{C}^{1\times 1\times n_3\times n_4} \to \mathbb{C}^{1\times 1\times n_3\times n_4}$ is the inverse transform.
+\end{block}
+\begin{block}{Tensor-linear combinations}
+~~Given tensor scalars $c_j \in\mathbb{C}^{1\times 1\times n_3\times n_4}, j\in[n_2]$, a tensor-linear combination of the tensor-columns $\mathcal{A}_j \in \mathbb{C}^{n_1\times 1\times n_3\times n_4}, j\in[n_2]$, is defined as
+$$
+\mathcal{A}_1\bullet c_1 + \cdots + \mathcal{A}_{n_2}\bullet c_{n_2}=\mathcal{A}\bullet\mathbf{c},
+$$
+where $\mathcal{A}=[\mathcal{A}_1, \cdots, \mathcal{A}_{n_2}]$ and $\mathbf{c}=[c_1, \cdots, c_{n_2}]^T$.
+
+\end{block}
+\end{frame}
+
+\begin{frame}{Transform-based Model}
+\begin{block}{$\mathcal{L}$-product}
+~~The $\mathcal{L}$-product $\mathcal{C}=\mathcal{A}\bullet\mathcal{B}\in\mathbb{C}^{n_1\times n_2\times n_3\times n_4}$ of $\mathcal{A}\in \mathbb{C}^{n_1\times n'\times n_3\times n_4}$ and $\mathbb{C}^{n'\times n_2\times n_3\times n_4}$ is defined as
+$$
+\mathcal{C}(i,j)=\sum_{k\in[n']}\mathcal{A}(i,k)\bullet\mathcal{B}(k,j), ~i\in[n_1], ~j\in[n_2].
+$$
+\end{block}
+\textbf{Lemma}. The $\mathcal{L}$-product $\mathcal{C}=\mathcal{A}\bullet\mathcal{B}$ can be calculated in the following way: First, we compute
+$$
+\texttt{matview}(\widetilde{\mathcal{C}})=\texttt{matview}(\widetilde{\mathcal{A}})\cdot\texttt{matview}(\widetilde{\mathcal{B}}).
+$$
+Then, we stack $\texttt{matview}(\widetilde{\mathcal{C}})$ back to tensor $\texttt{tenview}(\texttt{matview}(\widetilde{\mathcal{C}}))$ and perform the inverse transform to get $\mathcal{C}$, i.e., $\mathcal{C}=\mathcal{L}^{-1}(\widetilde{\mathcal{C}})$. The notation $\widetilde{\mathcal{A}}$ denotes the transform-domain representation of $\mathcal{A}\in\mathbb{C}^{n_1\times n_2\times n_3\times n_4}$ such that $\widetilde{\mathcal{A}}=\mathcal{L}(\mathcal{A})$ and $\mathcal{A}=\mathcal{L}^{-1}(\widetilde{\mathcal{A}})$.
+
+\end{frame}
+
+\begin{frame}{Transform-based Model}
+So the $\mathcal{L}$-product can be considered as
+$$
+\mathcal{L}(\mathcal{C}(i,j))=\sum_{k\in[n']}\mathcal{L}(\mathcal{A}(i,k))\circ\mathcal{L}(\mathcal{B}(k,j)),
+$$
+which can be represented as $\widetilde{\mathbf{C}^p}=\widetilde{\mathbf{A}^p}\widetilde{\mathbf{B}^p}, ~p\in[P]$.
+\end{frame}
+
 \begin{frame}{Low-tubal-rank Model}
 \vskip -1ex
 \begin{block}{Notations}
@@ -387,6 +458,8 @@ $$
 $$
 \end{block}
 \end{frame}
+
+
 
 \begin{frame}{Low-tubal-rank Model}
 \begin{block}{t-Product}
