@@ -839,7 +839,7 @@ Compared with Tensorly in Python and TensorLab in MATLAB, TenDeC++ reduces more 
 
 \begin{frame}{TenDeC++ (CPU)}
 \framesubtitle{PointerDeformer}
-A 3D tensor is stored as a 1D array in memory. Accessing these data with different sequences can form size-specific matrices including three mode-$n$views: column-major, row-major, and concatenation views. These virtual views motivate us to design PointerDeformer to skip the time-consuming unfolding operation in C++.
+A 3D tensor is stored as a 1D array in memory. Accessing these data with different sequences can form size-specific matrices including three mode-$n$ views: column-major, row-major, and concatenation views. These virtual views motivate us to design PointerDeformer to skip the time-consuming unfolding operation in C++.
 \begin{figure}
 	\centering  
 	\includegraphics[width=\linewidth]{figs/pointerdeformer_example.png}
