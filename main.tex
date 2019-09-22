@@ -45,7 +45,7 @@ in post Moore’s Law era!}
 \end{frame}
 
 \begin{frame}{Background}
-~~In a data deluge–era sensing system, the number and resolution of the sensors grow to the point that multidimensional data of exceedingly huge volume, variety and structural richness become ubiquitous across disciplines in engineering and data science.
+~~In sensing systems, the number and resolution of the sensors grow to the point that multidimensional data of exceedingly huge volume, variety and structural richness become ubiquitous across disciplines in engineering and data science.
 \begin{figure}
 	\centering  
 	\includegraphics[width=\linewidth]{figs/data_deluge.png}
@@ -839,7 +839,7 @@ Compared with Tensorly in Python and TensorLab in MATLAB, TenDeC++ reduces more 
 
 \begin{frame}{TenDeC++ (CPU)}
 \framesubtitle{PointerDeformer}
-A 3D tensor is stored as a 1D array in memory. Accessing these data with different sequences can form size-specific matrices including three mode-$n$views: column-major, row-major, and concatenation views. These virtual views motivate us to design PointerDeformer to skip the time-consuming unfolding operation in C++.
+A 3D tensor is stored as a 1D array in memory. Accessing these data with different sequences can form size-specific matrices including three mode-$n$ views: column-major, row-major, and concatenation views. These virtual views motivate us to design PointerDeformer to skip the time-consuming unfolding operation in C++.
 \begin{figure}
 	\centering  
 	\includegraphics[width=\linewidth]{figs/pointerdeformer_example.png}
